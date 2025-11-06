@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+##Credenciales base de datos
+src/main/resources/config.properties
