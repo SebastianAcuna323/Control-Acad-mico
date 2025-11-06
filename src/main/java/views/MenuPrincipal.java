@@ -228,10 +228,7 @@ public class MenuPrincipal extends JFrame {
     }
 
     private void abrirGestionPeriodos() {
-        JOptionPane.showMessageDialog(this,
-                "Módulo de Periodos en desarrollo",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+        new views.GestionPeriodos().setVisible(true);
     }
 
     private void salirSistema() {
