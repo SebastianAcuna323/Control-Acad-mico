@@ -5,9 +5,9 @@ import java.sql.*;
 public class ConexionBD {
 
     // Configuración de la base de datos
-    private static final String URL = "jdbc:mysql://localhost:3306/control-academico";
+    private static final String URL = "jdbc:mysql://localhost:3306/academico";
     private static final String USUARIO = "root";
-    private static final String PASSWORD = ""; // Cambiar según tu configuración
+    private static final String PASSWORD = "Sebas200618"; // Cambiar según tu configuración
 
     private static ConexionBD instancia;
     private Connection conexion;
