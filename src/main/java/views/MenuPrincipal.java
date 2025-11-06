@@ -185,14 +185,11 @@ public class MenuPrincipal extends JFrame {
 
     // Métodos para abrir cada módulo
     private void abrirGestionEstudiantes() {
-        new GestionEstudiantes().setVisible(true);
+        new views.GestionEstudiantes().setVisible(true);
     }
 
     private void abrirGestionDocentes() {
-        JOptionPane.showMessageDialog(this,
-                "Módulo de Docentes en desarrollo",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+        new views.GestionDocentes().setVisible(true);
     }
 
     private void abrirGestionCursos() {

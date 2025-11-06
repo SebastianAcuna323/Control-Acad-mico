@@ -12,10 +12,10 @@ import java.util.List;
  * Utiliza los Stored Procedures de la base de datos
  */
 
-public class EstudianteDao {
+public class EstudianteDAO {
     private ConexionBD conexionBD;
 
-    public EstudianteDao() {
+    public EstudianteDAO() {
         this.conexionBD = ConexionBD.getInstancia();
     }
 
@@ -243,7 +243,7 @@ public class EstudianteDao {
      * Método de prueba
      */
     public static void main(String[] args) {
-        EstudianteDao dao = new EstudianteDao();
+        EstudianteDAO dao = new EstudianteDAO();
 
         // Listar todos los estudiantes
         System.out.println("=== LISTANDO ESTUDIANTES ===");

@@ -1,6 +1,6 @@
 package controllers;
 
-import dao.EstudianteDao;
+import dao.EstudianteDAO;
 import model.Estudiante;
 import views.GestionEstudiantes;
 import javax.swing.*;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class EstudianteController {
 
-    private EstudianteDao estudianteDao;
+    private EstudianteDAO estudianteDao;
     private GestionEstudiantes vista;
 
     // Patrones de validación
@@ -23,7 +23,7 @@ public class EstudianteController {
      */
     public EstudianteController(GestionEstudiantes vista) {
         this.vista = vista;
-        this.estudianteDao = new EstudianteDao();
+        this.estudianteDao = new EstudianteDAO();
     }
 
     /**

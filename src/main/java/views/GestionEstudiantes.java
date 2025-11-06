@@ -1,6 +1,6 @@
 package views;
 
-import dao.EstudianteDao;
+import controllers.EstudianteController;
 import model.Estudiante;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GestionEstudiantes extends JFrame {
 
-    private EstudianteDao estudianteDAO;
+    private EstudianteController controller;
 
     // Componentes de la interfaz
     private JTable tablaEstudiantes;
@@ -31,45 +31,44 @@ public class GestionEstudiantes extends JFrame {
     private JButton btnActualizar;
     private JButton btnEliminar;
     private JButton btnBuscar;
+    private JButton btnEstadisticas;
     private JTextField txtBuscar;
 
     private int estudianteIdSeleccionado = -1;
 
     public GestionEstudiantes() {
-        estudianteDAO = new EstudianteDao();
+        this.controller = new EstudianteController(this);
         initComponents();
-        cargarEstudiantes();
+        controller.cargarEstudiantes();
     }
 
     private void initComponents() {
         setTitle("Gestión de Estudiantes - UniAJC");
         setSize(1200, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
         // Panel superior con título
-        JPanel panelTitulo = new JPanel();
-        panelTitulo.setBackground(new Color(0, 102, 204));
-        JLabel lblTitulo = new JLabel("GESTIÓN DE ESTUDIANTES");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-        lblTitulo.setForeground(Color.WHITE);
-        panelTitulo.add(lblTitulo);
-        add(panelTitulo, BorderLayout.NORTH);
+        add(crearPanelTitulo(), BorderLayout.NORTH);
 
         // Panel central - dividido en dos
         JPanel panelCentral = new JPanel(new BorderLayout(10, 10));
         panelCentral.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Panel izquierdo - Formulario
-        JPanel panelFormulario = crearPanelFormulario();
-        panelCentral.add(panelFormulario, BorderLayout.WEST);
-
-        // Panel derecho - Tabla
-        JPanel panelTabla = crearPanelTabla();
-        panelCentral.add(panelTabla, BorderLayout.CENTER);
+        panelCentral.add(crearPanelFormulario(), BorderLayout.WEST);
+        panelCentral.add(crearPanelTabla(), BorderLayout.CENTER);
 
         add(panelCentral, BorderLayout.CENTER);
+    }
+
+    private JPanel crearPanelTitulo() {
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(0, 102, 204));
+        JLabel lblTitulo = new JLabel("GESTIÓN DE ESTUDIANTES");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitulo.setForeground(Color.WHITE);
+        panel.add(lblTitulo);
+        return panel;
     }
 
     private JPanel crearPanelFormulario() {
@@ -78,32 +77,26 @@ public class GestionEstudiantes extends JFrame {
         panel.setBorder(BorderFactory.createTitledBorder("Datos del Estudiante"));
         panel.setPreferredSize(new Dimension(400, 0));
 
-        // Identificación
+        // Campos del formulario
         panel.add(crearCampo("Identificación:", txtIdentificacion = new JTextField(20)));
 
-        // Tipo de Documento
         cboTipoDocumento = new JComboBox<>(new String[]{"CC", "TI", "CE", "PA"});
         panel.add(crearCampo("Tipo Documento:", cboTipoDocumento));
 
-        // Nombre
         panel.add(crearCampo("Nombre Completo:", txtNombre = new JTextField(20)));
 
-        // Género
         cboGenero = new JComboBox<>(new String[]{"M", "F", "Otro"});
         panel.add(crearCampo("Género:", cboGenero));
 
-        // Correo Institucional
         panel.add(crearCampo("Correo Institucional:",
                 txtCorreoInstitucional = new JTextField(20)));
 
-        // Correo Personal
         panel.add(crearCampo("Correo Personal:",
                 txtCorreoPersonal = new JTextField(20)));
 
-        // Teléfono
         panel.add(crearCampo("Teléfono:", txtTelefono = new JTextField(20)));
 
-        // Es Vocero
+        // Checkbox vocero
         JPanel panelVocero = new JPanel(new FlowLayout(FlowLayout.LEFT));
         chkEsVocero = new JCheckBox("Es Vocero del Grupo");
         panelVocero.add(chkEsVocero);
@@ -119,26 +112,31 @@ public class GestionEstudiantes extends JFrame {
         panelComentarios.add(scrollComentarios, BorderLayout.CENTER);
         panel.add(panelComentarios);
 
-        // Botones
-        JPanel panelBotones = new JPanel(new GridLayout(2, 2, 5, 5));
-        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        // Botones de acción
+        panel.add(crearPanelBotones());
+
+        return panel;
+    }
+
+    private JPanel crearPanelBotones() {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
 
         btnNuevo = new JButton("Nuevo");
         btnGuardar = new JButton("Guardar");
         btnActualizar = new JButton("Actualizar");
         btnEliminar = new JButton("Eliminar");
 
+        // Eventos usando el controlador
         btnNuevo.addActionListener(e -> limpiarFormulario());
         btnGuardar.addActionListener(e -> guardarEstudiante());
         btnActualizar.addActionListener(e -> actualizarEstudiante());
         btnEliminar.addActionListener(e -> eliminarEstudiante());
 
-        panelBotones.add(btnNuevo);
-        panelBotones.add(btnGuardar);
-        panelBotones.add(btnActualizar);
-        panelBotones.add(btnEliminar);
-
-        panel.add(panelBotones);
+        panel.add(btnNuevo);
+        panel.add(btnGuardar);
+        panel.add(btnActualizar);
+        panel.add(btnEliminar);
 
         return panel;
     }
@@ -157,8 +155,12 @@ public class GestionEstudiantes extends JFrame {
         panelBusqueda.add(btnBuscar);
 
         JButton btnRefrescar = new JButton("Refrescar");
-        btnRefrescar.addActionListener(e -> cargarEstudiantes());
+        btnRefrescar.addActionListener(e -> controller.cargarEstudiantes());
         panelBusqueda.add(btnRefrescar);
+
+        btnEstadisticas = new JButton("📊 Estadísticas");
+        btnEstadisticas.addActionListener(e -> mostrarEstadisticas());
+        panelBusqueda.add(btnEstadisticas);
 
         panel.add(panelBusqueda, BorderLayout.NORTH);
 
@@ -194,9 +196,13 @@ public class GestionEstudiantes extends JFrame {
         return panel;
     }
 
-    private void cargarEstudiantes() {
+    // ========== MÉTODOS PÚBLICOS LLAMADOS POR EL CONTROLADOR ==========
+
+    /**
+     * Actualizar la tabla con la lista de estudiantes
+     */
+    public void actualizarTabla(List<Estudiante> estudiantes) {
         modeloTabla.setRowCount(0);
-        List<Estudiante> estudiantes = estudianteDAO.listarTodos();
 
         for (Estudiante e : estudiantes) {
             Object[] fila = {
@@ -212,11 +218,46 @@ public class GestionEstudiantes extends JFrame {
         }
     }
 
+    /**
+     * Limpiar el formulario
+     */
+    public void limpiarFormulario() {
+        estudianteIdSeleccionado = -1;
+        txtIdentificacion.setText("");
+        txtNombre.setText("");
+        txtCorreoInstitucional.setText("");
+        txtCorreoPersonal.setText("");
+        txtTelefono.setText("");
+        txtComentarios.setText("");
+        chkEsVocero.setSelected(false);
+        cboTipoDocumento.setSelectedIndex(0);
+        cboGenero.setSelectedIndex(0);
+        tablaEstudiantes.clearSelection();
+    }
+
+    /**
+     * Mostrar mensaje
+     */
+    public void mostrarMensaje(String mensaje, String titulo, int tipo) {
+        JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);
+    }
+
+    /**
+     * Confirmar acción
+     */
+    public int confirmarAccion(String mensaje, String titulo) {
+        return JOptionPane.showConfirmDialog(
+                this, mensaje, titulo, JOptionPane.YES_NO_OPTION
+        );
+    }
+
+    // ========== MÉTODOS PRIVADOS DE EVENTOS ==========
+
     private void cargarEstudianteSeleccionado() {
         int fila = tablaEstudiantes.getSelectedRow();
         if (fila >= 0) {
             estudianteIdSeleccionado = (int) modeloTabla.getValueAt(fila, 0);
-            Estudiante e = estudianteDAO.obtenerPorId(estudianteIdSeleccionado);
+            Estudiante e = controller.obtenerEstudiante(estudianteIdSeleccionado);
 
             if (e != null) {
                 txtIdentificacion.setText(e.getIdentificacion());
@@ -233,9 +274,7 @@ public class GestionEstudiantes extends JFrame {
     }
 
     private void guardarEstudiante() {
-        if (!validarCampos()) return;
-
-        Estudiante estudiante = new Estudiante(
+        controller.crearEstudiante(
                 txtIdentificacion.getText().trim(),
                 txtNombre.getText().trim(),
                 txtCorreoInstitucional.getText().trim(),
@@ -246,31 +285,10 @@ public class GestionEstudiantes extends JFrame {
                 cboGenero.getSelectedItem().toString(),
                 txtComentarios.getText().trim()
         );
-
-        if (estudianteDAO.crear(estudiante)) {
-            JOptionPane.showMessageDialog(this,
-                    "Estudiante guardado exitosamente",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            limpiarFormulario();
-            cargarEstudiantes();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Error al guardar estudiante",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void actualizarEstudiante() {
-        if (estudianteIdSeleccionado < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Seleccione un estudiante de la tabla",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!validarCampos()) return;
-
-        Estudiante estudiante = new Estudiante(
+        controller.actualizarEstudiante(
                 estudianteIdSeleccionado,
                 txtIdentificacion.getText().trim(),
                 txtNombre.getText().trim(),
@@ -282,109 +300,25 @@ public class GestionEstudiantes extends JFrame {
                 cboGenero.getSelectedItem().toString(),
                 txtComentarios.getText().trim()
         );
-
-        if (estudianteDAO.actualizar(estudiante)) {
-            JOptionPane.showMessageDialog(this,
-                    "Estudiante actualizado exitosamente",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            limpiarFormulario();
-            cargarEstudiantes();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Error al actualizar estudiante",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void eliminarEstudiante() {
-        if (estudianteIdSeleccionado < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Seleccione un estudiante de la tabla",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de eliminar este estudiante?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            if (estudianteDAO.eliminar(estudianteIdSeleccionado)) {
-                JOptionPane.showMessageDialog(this,
-                        "Estudiante eliminado exitosamente",
-                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                limpiarFormulario();
-                cargarEstudiantes();
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Error al eliminar estudiante",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        controller.eliminarEstudiante(estudianteIdSeleccionado);
     }
 
     private void buscarEstudiante() {
-        String busqueda = txtBuscar.getText().trim();
-        if (busqueda.isEmpty()) {
-            cargarEstudiantes();
-            return;
-        }
-
-        modeloTabla.setRowCount(0);
-        List<Estudiante> estudiantes = estudianteDAO.buscarPorNombre(busqueda);
-
-        for (Estudiante e : estudiantes) {
-            Object[] fila = {
-                    e.getEstudianteId(),
-                    e.getIdentificacion(),
-                    e.getNombre(),
-                    e.getCorreoInstitucional(),
-                    e.getTelefono(),
-                    e.isEsVocero() ? "Sí" : "No",
-                    e.getGenero()
-            };
-            modeloTabla.addRow(fila);
-        }
+        String criterio = txtBuscar.getText().trim();
+        controller.buscarEstudiantes(criterio);
     }
 
-    private void limpiarFormulario() {
-        estudianteIdSeleccionado = -1;
-        txtIdentificacion.setText("");
-        txtNombre.setText("");
-        txtCorreoInstitucional.setText("");
-        txtCorreoPersonal.setText("");
-        txtTelefono.setText("");
-        txtComentarios.setText("");
-        chkEsVocero.setSelected(false);
-        cboTipoDocumento.setSelectedIndex(0);
-        cboGenero.setSelectedIndex(0);
-        tablaEstudiantes.clearSelection();
-    }
-
-    private boolean validarCampos() {
-        if (txtIdentificacion.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "La identificación es obligatoria",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        if (txtNombre.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "El nombre es obligatorio",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        if (txtCorreoInstitucional.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "El correo institucional es obligatorio",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
+    private void mostrarEstadisticas() {
+        String estadisticas = controller.obtenerEstadisticas();
+        JOptionPane.showMessageDialog(
+                this,
+                estadisticas,
+                "Estadísticas de Estudiantes",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     public static void main(String[] args) {
