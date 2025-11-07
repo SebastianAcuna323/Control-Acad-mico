@@ -4,7 +4,6 @@ package views;
 import controllers.CalificacionController;
 import dao.CalificacionDAO;
 import model.*;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,7 +16,7 @@ public class GestionCalificaciones extends JFrame {
     // Tabs principales
     private JTabbedPane tabbedPane;
 
-    // Tab 1: Estructura de Evaluación
+
     private JComboBox<Curso> cboCursoEstructura;
     private JList<CorteEvaluacion> listCortes;
     private DefaultListModel<CorteEvaluacion> modeloCortes;
@@ -26,7 +25,7 @@ public class GestionCalificaciones extends JFrame {
     private JTextField txtNombreComponente;
     private JSpinner spinPorcentaje;
 
-    // Tab 2: Registro de Calificaciones
+
     private JComboBox<Curso> cboCursoCalif;
     private JComboBox<Estudiante> cboEstudiante;
     private JComboBox<ComponenteEvaluacion> cboComponente;
@@ -53,7 +52,7 @@ public class GestionCalificaciones extends JFrame {
 
         add(crearPanelTitulo(), BorderLayout.NORTH);
 
-        // Crear tabs
+
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("📋 Estructura de Evaluación", crearTabEstructura());
         tabbedPane.addTab("📝 Registro de Calificaciones", crearTabCalificaciones());
@@ -87,7 +86,6 @@ public class GestionCalificaciones extends JFrame {
         return panel;
     }
 
-    // ========== TAB 1: ESTRUCTURA DE EVALUACIÓN ==========
 
     private JPanel crearTabEstructura() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
@@ -108,7 +106,7 @@ public class GestionCalificaciones extends JFrame {
 
         panel.add(panelSuperior, BorderLayout.NORTH);
 
-        // Panel central: Split entre cortes y componentes
+        // Panel central entre cortes y componentes
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(crearPanelCortes());
         splitPane.setRightComponent(crearPanelComponentes());
@@ -188,17 +186,16 @@ public class GestionCalificaciones extends JFrame {
         return panel;
     }
 
-    // ========== TAB 2: REGISTRO DE CALIFICACIONES ==========
 
     private JPanel crearTabCalificaciones() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Panel izquierdo: Formulario
+        // Panel izquierdo Formulario
         JPanel panelForm = crearFormularioCalificaciones();
         panel.add(panelForm, BorderLayout.WEST);
 
-        // Panel derecho: Tabla de calificaciones
+        // Panel derecho Tabla de calificaciones
         JPanel panelTabla = crearTablaCalificaciones();
         panel.add(panelTabla, BorderLayout.CENTER);
 
@@ -370,12 +367,6 @@ public class GestionCalificaciones extends JFrame {
         return panel;
     }
 
-// Continúa en parte
-// CONTINUACIÓN DE GestionCalificaciones.java
-// Agregar estos métodos a la clase
-
-    // ========== TAB 3: REPORTES ==========
-
     private JPanel crearTabReportes() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -432,7 +423,7 @@ public class GestionCalificaciones extends JFrame {
         return panel;
     }
 
-    // ========== MÉTODOS AUXILIARES ==========
+    // ---------------------------- MÉTODOS AUXILIARES ------------------------------
 
     private DefaultListCellRenderer crearRendererCurso() {
         return new DefaultListCellRenderer() {
@@ -465,8 +456,6 @@ public class GestionCalificaciones extends JFrame {
             cboEstudiante.addItem(e);
         }
     }
-
-    // ========== MÉTODOS TAB ESTRUCTURA ==========
 
     private void crearEstructuraAutomatica() {
         Curso curso = (Curso) cboCursoEstructura.getSelectedItem();
@@ -542,7 +531,6 @@ public class GestionCalificaciones extends JFrame {
         }
     }
 
-    // ========== MÉTODOS TAB CALIFICACIONES ==========
 
     private void cargarComponentesCurso() {
         Curso curso = (Curso) cboCursoCalif.getSelectedItem();
@@ -655,7 +643,7 @@ public class GestionCalificaciones extends JFrame {
         tablaCalificaciones.clearSelection();
     }
 
-    // ========== MÉTODOS DE DIÁLOGO ==========
+    // ----------------------- MÉTODOS DE DIÁLOGO ---------------------------
 
     public void mostrarReporteNotas(List<CalificacionDAO.NotaFinal> notas) {
         JDialog dialog = new JDialog(this, "Reporte de Notas Finales", true);
@@ -744,7 +732,7 @@ public class GestionCalificaciones extends JFrame {
         dialog.setVisible(true);
     }
 
-    // ========== MÉTODOS PÚBLICOS ==========
+    // ------------------------------ MÉTODOS PÚBLICOS --------------------------
 
     public void mostrarMensaje(String mensaje, String titulo, int tipo) {
         JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);

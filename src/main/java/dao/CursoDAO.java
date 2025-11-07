@@ -14,10 +14,9 @@ public class CursoDAO {
         this.conexionDB = ConexionBD.getInstancia();
     }
 
-    /**
-     * Crear un nuevo curso usando SP
-     * CALL sp_crear_curso(...)
-     */
+
+     //Crear un nuevo curso usando SP
+
     public boolean crear(Curso curso) {
         String sql = "CALL sp_crear_curso(?, ?, ?, ?)";
 
@@ -42,10 +41,7 @@ public class CursoDAO {
         }
     }
 
-    /**
-     * Obtener curso por ID usando SP
-     * CALL sp_obtener_curso(?)
-     */
+
     public Curso obtenerPorId(int cursoId) {
         String sql = "CALL sp_obtener_curso(?)";
 
@@ -64,10 +60,7 @@ public class CursoDAO {
         return null;
     }
 
-    /**
-     * Listar todos los cursos usando SP
-     * CALL sp_listar_cursos()
-     */
+
     public List<Curso> listarTodos() {
         List<Curso> cursos = new ArrayList<>();
         String sql = "CALL sp_listar_cursos()";
@@ -86,10 +79,7 @@ public class CursoDAO {
         return cursos;
     }
 
-    /**
-     * Listar cursos por periodo académico usando SP
-     * CALL sp_listar_cursos_por_periodo(?)
-     */
+
     public List<Curso> listarPorPeriodo(int periodoId) {
         List<Curso> cursos = new ArrayList<>();
         String sql = "CALL sp_listar_cursos_por_periodo(?)";
@@ -109,10 +99,7 @@ public class CursoDAO {
         return cursos;
     }
 
-    /**
-     * Actualizar curso usando SP
-     * CALL sp_actualizar_curso(...)
-     */
+
     public boolean actualizar(Curso curso) {
         String sql = "CALL sp_actualizar_curso(?, ?, ?, ?, ?)";
 
@@ -138,10 +125,7 @@ public class CursoDAO {
         }
     }
 
-    /**
-     * Eliminar curso usando SP
-     * CALL sp_eliminar_curso(?)
-     */
+
     public boolean eliminar(int cursoId) {
         String sql = "CALL sp_eliminar_curso(?)";
 
@@ -163,9 +147,7 @@ public class CursoDAO {
         }
     }
 
-    /**
-     * Buscar cursos por nombre
-     */
+
     public List<Curso> buscarPorNombre(String nombre) {
         List<Curso> cursos = new ArrayList<>();
         String sql = "SELECT c.*, d.nombre_docente, p.nombre_periodo " +
@@ -190,9 +172,7 @@ public class CursoDAO {
         return cursos;
     }
 
-    /**
-     * Listar cursos de un docente
-     */
+
     public List<Curso> listarPorDocente(int docenteId) {
         List<Curso> cursos = new ArrayList<>();
         String sql = "SELECT c.*, d.nombre_docente, p.nombre_periodo " +
@@ -217,9 +197,7 @@ public class CursoDAO {
         return cursos;
     }
 
-    /**
-     * Obtener cursos usando la vista completa
-     */
+
     public List<Curso> listarVista() {
         List<Curso> cursos = new ArrayList<>();
         String sql = "SELECT * FROM vista_cursos_completa ORDER BY nombre_curso";
@@ -246,9 +224,7 @@ public class CursoDAO {
         return cursos;
     }
 
-    /**
-     * Mapear ResultSet a objeto Curso (básico)
-     */
+
     private Curso mapearCurso(ResultSet rs) throws SQLException {
         Curso curso = new Curso();
         curso.setCursoId(rs.getInt("curso_id"));
@@ -268,9 +244,6 @@ public class CursoDAO {
         return curso;
     }
 
-    /**
-     * Mapear ResultSet a objeto Curso (con información relacionada)
-     */
     private Curso mapearCursoCompleto(ResultSet rs) throws SQLException {
         Curso curso = new Curso();
         curso.setCursoId(rs.getInt("curso_id"));

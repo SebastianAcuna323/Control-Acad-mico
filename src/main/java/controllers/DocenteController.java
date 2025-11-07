@@ -4,16 +4,11 @@ package controllers;
 import dao.DocenteDAO;
 import model.Docente;
 import views.GestionDocentes;
-
 import javax.swing.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-    /**
-     * Controlador para el módulo de Docentes
-     * Patrón MVC - Intermediario entre Vista y Modelo
-     * Sistema de Control Académico - UniAJC
-     */
+
     public class DocenteController {
 
         private DocenteDAO docenteDAO;
@@ -23,17 +18,13 @@ import java.util.regex.Pattern;
         private static final Pattern PATTERN_EMAIL =
                 Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
-        /**
-         * Constructor
-         */
+
         public DocenteController(GestionDocentes vista) {
             this.vista = vista;
             this.docenteDAO = new DocenteDAO();
         }
 
-        /**
-         * Crear un nuevo docente
-         */
+
         public void crearDocente(String nombreDocente, String identificacion,
                                  String tipoIdentificacion, String genero,
                                  String correo, String tituloEstudios,
@@ -75,9 +66,6 @@ import java.util.regex.Pattern;
             }
         }
 
-        /**
-         * Actualizar un docente existente
-         */
         public void actualizarDocente(int docenteId, String nombreDocente,
                                       String identificacion, String tipoIdentificacion,
                                       String genero, String correo, String tituloEstudios,
@@ -128,9 +116,6 @@ import java.util.regex.Pattern;
             }
         }
 
-        /**
-         * Eliminar un docente
-         */
         public void eliminarDocente(int docenteId) {
             // Validar que se haya seleccionado un docente
             if (docenteId < 0) {
@@ -172,17 +157,12 @@ import java.util.regex.Pattern;
             }
         }
 
-        /**
-         * Cargar todos los docentes en la vista
-         */
+
         public void cargarDocentes() {
             List<Docente> docentes = docenteDAO.listarTodos();
             vista.actualizarTabla(docentes);
         }
 
-        /**
-         * Buscar docentes por nombre
-         */
         public void buscarDocentes(String criterio) {
             if (criterio == null || criterio.trim().isEmpty()) {
                 cargarDocentes();
@@ -201,24 +181,17 @@ import java.util.regex.Pattern;
             }
         }
 
-        /**
-         * Obtener un docente por ID
-         */
+
         public Docente obtenerDocente(int docenteId) {
             return docenteDAO.obtenerPorId(docenteId);
         }
 
-        /**
-         * Listar docentes con cursos asignados
-         */
+
         public void cargarDocentesConCursos() {
             List<Docente> docentes = docenteDAO.listarConCursos();
             vista.actualizarTabla(docentes);
         }
 
-        /**
-         * Validar datos del docente antes de guardar/actualizar
-         */
         private String validarDatosDocente(String nombreDocente,
                                            String identificacion, String correo) {
 
@@ -265,16 +238,12 @@ import java.util.regex.Pattern;
             return null; // Validación exitosa
         }
 
-        /**
-         * Validar formato de email
-         */
+
         public boolean validarEmail(String email) {
             return PATTERN_EMAIL.matcher(email).matches();
         }
 
-        /**
-         * Obtener estadísticas de docentes
-         */
+
         public String obtenerEstadisticas() {
             List<Docente> todos = docenteDAO.listarTodos();
 

@@ -5,7 +5,6 @@ import dao.CursoDAO;
 import dao.EstudianteDAO;
 import model.*;
 import views.GestionCalificaciones;
-
 import javax.swing.*;
 import java.util.List;
 
@@ -22,11 +21,8 @@ public class CalificacionController {
         this.estudianteDAO = new EstudianteDAO();
     }
 
-    // ========== GESTIÓN DE ESTRUCTURA DE EVALUACIÓN ==========
+    // ------------------ GESTIÓN DE ESTRUCTURA DE EVALUACIÓN ----------------------
 
-    /**
-     * Crear estructura de evaluación automática (3 cortes)
-     */
     public void crearEstructuraEvaluacion(int cursoId, int periodoId) {
         if (cursoId <= 0 || periodoId <= 0) {
             vista.mostrarMensaje(
@@ -69,9 +65,7 @@ public class CalificacionController {
         }
     }
 
-    /**
-     * Agregar componente a un corte
-     */
+
     public void agregarComponente(int corteId, String nombreComponente, double porcentaje) {
         String mensajeValidacion = validarComponente(nombreComponente, porcentaje);
         if (mensajeValidacion != null) {
@@ -117,11 +111,9 @@ public class CalificacionController {
         }
     }
 
-    // ========== GESTIÓN DE CALIFICACIONES ==========
+    // ------------------- GESTIÓN DE CALIFICACIONES ----------------------
 
-    /**
-     * Registrar calificación
-     */
+
     public void registrarCalificacion(int estudianteId, int componenteId,
                                       double nota, String comentarios) {
 
@@ -164,9 +156,7 @@ public class CalificacionController {
         }
     }
 
-    /**
-     * Actualizar calificación
-     */
+
     public void actualizarCalificacion(int calificacionId, double nota, String comentarios) {
         if (calificacionId <= 0) {
             vista.mostrarMensaje(
@@ -207,9 +197,7 @@ public class CalificacionController {
         }
     }
 
-    /**
-     * Eliminar calificación
-     */
+
     public void eliminarCalificacion(int calificacionId) {
         if (calificacionId <= 0) {
             vista.mostrarMensaje(
@@ -245,7 +233,7 @@ public class CalificacionController {
         }
     }
 
-    // ========== CARGA DE DATOS ==========
+    // ------------------- CARGA DE DATOS ------------------------
 
     public List<Curso> cargarCursos() {
         return cursoDAO.listarVista();
@@ -277,11 +265,9 @@ public class CalificacionController {
         vista.actualizarTablaCalificaciones(calificaciones);
     }
 
-    // ========== REPORTES Y CONSULTAS ==========
+    // ------------------- REPORTES Y CONSULTAS ----------------------
 
-    /**
-     * Mostrar nota final de un estudiante
-     */
+
     public void mostrarNotaFinal(int estudianteId, int cursoId) {
         if (estudianteId <= 0 || cursoId <= 0) {
             vista.mostrarMensaje(
@@ -330,9 +316,7 @@ public class CalificacionController {
         }
     }
 
-    /**
-     * Mostrar reporte completo del curso
-     */
+
     public void mostrarReporteCurso(int cursoId) {
         if (cursoId <= 0) {
             vista.mostrarMensaje(
@@ -357,9 +341,7 @@ public class CalificacionController {
         vista.mostrarReporteNotas(notas);
     }
 
-    /**
-     * Mostrar ranking del curso
-     */
+
     public void mostrarRanking(int cursoId) {
         if (cursoId <= 0) {
             vista.mostrarMensaje(
@@ -384,7 +366,7 @@ public class CalificacionController {
         vista.mostrarRanking(ranking);
     }
 
-    // ========== VALIDACIONES ==========
+    // ----------------------- VALIDACIONES -------------------
 
     private String validarComponente(String nombreComponente, double porcentaje) {
         if (nombreComponente == null || nombreComponente.trim().isEmpty()) {
@@ -418,9 +400,7 @@ public class CalificacionController {
         return null;
     }
 
-    /**
-     * Obtener estadísticas generales
-     */
+
     public String obtenerEstadisticas(int cursoId) {
         List<CalificacionDAO.NotaFinal> notas = calificacionDAO.obtenerNotasFinalesCurso(cursoId);
 

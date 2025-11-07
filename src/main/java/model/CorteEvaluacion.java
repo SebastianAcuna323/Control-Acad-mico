@@ -7,8 +7,6 @@ public class CorteEvaluacion {
     private String nombreCorte;
     private double porcentaje;
     private String comentariosCorte;
-
-    // Información relacionada
     private String nombreCurso;
     private String nombrePeriodo;
 
@@ -107,9 +105,7 @@ public class CorteEvaluacion {
         return nombreCorte + " (" + porcentaje + "%)";
     }
 
-    /**
-     * Validar que el porcentaje sea válido
-     */
+
     public boolean validarPorcentaje() {
         return porcentaje > 0 && porcentaje <= 100;
     }

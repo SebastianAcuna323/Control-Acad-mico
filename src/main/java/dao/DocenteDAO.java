@@ -14,10 +14,9 @@ public class DocenteDAO {
         this.conexionDB = ConexionBD.getInstancia();
     }
 
-    /**
-     * Crear un nuevo docente usando SP
-     * CALL sp_crear_docente(...)
-     */
+
+     //Crear un nuevo docente usando SP
+
     public boolean crear(Docente docente) {
         String sql = "CALL sp_crear_docente(?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -46,10 +45,7 @@ public class DocenteDAO {
         }
     }
 
-    /**
-     * Obtener docente por ID usando SP
-     * CALL sp_obtener_docente(?)
-     */
+
     public Docente obtenerPorId(int docenteId) {
         String sql = "CALL sp_obtener_docente(?)";
 
@@ -68,10 +64,6 @@ public class DocenteDAO {
         return null;
     }
 
-    /**
-     * Listar todos los docentes usando SP
-     * CALL sp_listar_docentes()
-     */
     public List<Docente> listarTodos() {
         List<Docente> docentes = new ArrayList<>();
         String sql = "CALL sp_listar_docentes()";
@@ -90,10 +82,6 @@ public class DocenteDAO {
         return docentes;
     }
 
-    /**
-     * Actualizar docente usando SP
-     * CALL sp_actualizar_docente(...)
-     */
     public boolean actualizar(Docente docente) {
         String sql = "CALL sp_actualizar_docente(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -123,10 +111,6 @@ public class DocenteDAO {
         }
     }
 
-    /**
-     * Eliminar docente usando SP
-     * CALL sp_eliminar_docente(?)
-     */
     public boolean eliminar(int docenteId) {
         String sql = "CALL sp_eliminar_docente(?)";
 
@@ -148,9 +132,7 @@ public class DocenteDAO {
         }
     }
 
-    /**
-     * Buscar docentes por nombre
-     */
+
     public List<Docente> buscarPorNombre(String nombre) {
         List<Docente> docentes = new ArrayList<>();
         String sql = "SELECT * FROM docentes WHERE nombre_docente LIKE ? ORDER BY nombre_docente";
@@ -170,9 +152,7 @@ public class DocenteDAO {
         return docentes;
     }
 
-    /**
-     * Obtener docentes con sus cursos (usando vista)
-     */
+
     public List<Docente> listarConCursos() {
         List<Docente> docentes = new ArrayList<>();
         String sql = "SELECT DISTINCT d.* FROM vista_docentes_cursos d ORDER BY d.nombre_docente";
@@ -191,9 +171,7 @@ public class DocenteDAO {
         return docentes;
     }
 
-    /**
-     * Mapear ResultSet a objeto Docente
-     */
+
     private Docente mapearDocente(ResultSet rs) throws SQLException {
         Docente docente = new Docente();
         docente.setDocenteId(rs.getInt("docente_id"));

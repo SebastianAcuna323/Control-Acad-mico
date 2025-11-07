@@ -1,24 +1,39 @@
 package model;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class ConexionBD {
 
-    // Configuración de la base de datos
-    private static final String URL = "jdbc:mysql://localhost:3306/academico";
-    private static final String USUARIO = "root";
-    private static final String PASSWORD = "Sebas200618"; // Cambiar según tu configuración
+    private static String URL;
+    private static String USERNAME;
+    private static String PASSWORD;
 
     private static ConexionBD instancia;
     private Connection conexion;
 
-    /**
-     * Constructor privado para patrón Singleton
-     */
+    // Carga las credenciales desde config.properties
+    static {
+        try {
+            Properties props = new Properties();
+            props.load(new FileInputStream("config.properties"));
+
+            URL = props.getProperty("URL");
+            USERNAME = props.getProperty("USERNAME");
+            PASSWORD = props.getProperty("PASSWORD");
+
+        } catch (IOException e) {
+            System.err.println("❌ Error al cargar el archivo config.properties");
+            e.printStackTrace();
+        }
+    }
+
     private ConexionBD() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+            this.conexion = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("✅ Conexión exitosa a la base de datos");
         } catch (ClassNotFoundException e) {
             System.err.println("❌ Error: Driver MySQL no encontrado");
@@ -29,9 +44,6 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Obtiene la instancia única de la conexión (Singleton)
-     */
     public static ConexionBD getInstancia() {
         if (instancia == null || !isConexionActiva()) {
             instancia = new ConexionBD();
@@ -39,13 +51,10 @@ public class ConexionBD {
         return instancia;
     }
 
-    /**
-     * Obtiene la conexión activa
-     */
     public Connection getConexion() {
         try {
             if (conexion == null || conexion.isClosed()) {
-                conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+                conexion = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             }
         } catch (SQLException e) {
             System.err.println("❌ Error al obtener la conexión");
@@ -54,9 +63,6 @@ public class ConexionBD {
         return conexion;
     }
 
-    /**
-     * Verifica si la conexión está activa
-     */
     private static boolean isConexionActiva() {
         try {
             return instancia != null &&
@@ -67,9 +73,6 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Cierra la conexión
-     */
     public void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {
@@ -82,12 +85,6 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Ejecuta un procedimiento almacenado
-     * @param procedimiento Nombre del procedimiento
-     * @param parametros Parámetros del procedimiento
-     * @return ResultSet con los resultados
-     */
     public ResultSet ejecutarProcedimiento(String procedimiento, Object... parametros) {
         try {
             StringBuilder sql = new StringBuilder("CALL ").append(procedimiento).append("(");
@@ -111,11 +108,6 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Ejecuta una consulta SQL
-     * @param sql Consulta SQL
-     * @return ResultSet con los resultados
-     */
     public ResultSet ejecutarConsulta(String sql) {
         try {
             Statement stmt = conexion.createStatement();
@@ -127,11 +119,6 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Ejecuta una actualización SQL (INSERT, UPDATE, DELETE)
-     * @param sql Sentencia SQL
-     * @return Número de filas afectadas
-     */
     public int ejecutarActualizacion(String sql) {
         try {
             Statement stmt = conexion.createStatement();
@@ -143,16 +130,12 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Test de conexión
-     */
     public static void main(String[] args) {
         ConexionBD db = ConexionBD.getInstancia();
 
         if (db.getConexion() != null) {
             System.out.println("✅ Test de conexión exitoso");
 
-            // Probar una consulta simple
             try {
                 ResultSet rs = db.ejecutarConsulta("SELECT DATABASE() as db_name");
                 if (rs.next()) {

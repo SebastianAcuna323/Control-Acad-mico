@@ -6,8 +6,6 @@ public class Curso {
     private int periodoAcademicoId;
     private int docenteId;
     private String descripcionCurso;
-
-    // Para mostrar información relacionada
     private String nombrePeriodo;
     private String nombreDocente;
 

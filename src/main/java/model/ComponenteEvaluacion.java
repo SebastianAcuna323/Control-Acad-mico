@@ -6,7 +6,6 @@ public class ComponenteEvaluacion {
     private String nombreComponente;
     private double porcentaje;
 
-    // Información relacionada
     private String nombreCorte;
     private double porcentajeCorte;
 
@@ -80,9 +79,8 @@ public class ComponenteEvaluacion {
         this.porcentajeCorte = porcentajeCorte;
     }
 
-    /**
-     * Calcular porcentaje real sobre el total del curso
-     */
+
+
     public double calcularPorcentajeSobreTotal() {
         if (porcentajeCorte > 0) {
             return (porcentaje * porcentajeCorte) / 100.0;
@@ -95,9 +93,6 @@ public class ComponenteEvaluacion {
         return nombreComponente + " (" + porcentaje + "%)";
     }
 
-    /**
-     * Validar que el porcentaje sea válido
-     */
     public boolean validarPorcentaje() {
         return porcentaje > 0 && porcentaje <= 100;
     }

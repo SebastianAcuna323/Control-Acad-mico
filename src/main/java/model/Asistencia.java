@@ -122,9 +122,7 @@ public class Asistencia {
         this.numeroClase = numeroClase;
     }
 
-    /**
-     * Obtener símbolo del estado
-     */
+
     public String getEstadoSimbolo() {
         switch (estadoAsistencia.toLowerCase()) {
             case "presente":
@@ -138,9 +136,9 @@ public class Asistencia {
         }
     }
 
-    /**
-     * Obtener color del estado
-     */
+
+     //Obtener color del estado
+
     public java.awt.Color getEstadoColor() {
         switch (estadoAsistencia.toLowerCase()) {
             case "presente":

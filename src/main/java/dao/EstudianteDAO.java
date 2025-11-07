@@ -2,15 +2,10 @@ package dao;
 
 import model.Estudiante;
 import model.ConexionBD;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO para gestionar operaciones CRUD de Estudiantes
- * Utiliza los Stored Procedures de la base de datos
- */
 
 public class EstudianteDAO {
     private ConexionBD conexionBD;
@@ -19,10 +14,9 @@ public class EstudianteDAO {
         this.conexionBD = ConexionBD.getInstancia();
     }
 
-    /**
-     * Crear un nuevo estudiante usando SP
-     * VERSIÓN MEJORADA con mejor manejo de errores
-     */
+
+     //Crear un nuevo estudiante usando SP
+
     public boolean crear(Estudiante estudiante) {
         String sql = "CALL sp_crear_estudiante(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -82,9 +76,7 @@ public class EstudianteDAO {
         }
     }
 
-    /**
-     * Obtener estudiante por ID usando SP
-     */
+
     public Estudiante obtenerPorId(int estudianteId) {
         String sql = "CALL sp_obtener_estudiante(?)";
         CallableStatement stmt = null;
@@ -113,9 +105,7 @@ public class EstudianteDAO {
         return null;
     }
 
-    /**
-     * Listar todos los estudiantes usando SP
-     */
+
     public List<Estudiante> listarTodos() {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "CALL sp_listar_estudiantes()";
@@ -144,9 +134,7 @@ public class EstudianteDAO {
         return estudiantes;
     }
 
-    /**
-     * Buscar estudiante por identificación usando SP
-     */
+
     public Estudiante buscarPorIdentificacion(String identificacion) {
         String sql = "CALL sp_buscar_estudiante_por_identificacion(?)";
         CallableStatement stmt = null;
@@ -175,9 +163,6 @@ public class EstudianteDAO {
         return null;
     }
 
-    /**
-     * Buscar estudiantes por nombre usando SP
-     */
     public List<Estudiante> buscarPorNombre(String nombre) {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "CALL sp_buscar_estudiantes_por_nombre(?)";
@@ -207,9 +192,7 @@ public class EstudianteDAO {
         return estudiantes;
     }
 
-    /**
-     * Actualizar estudiante usando SP
-     */
+
     public boolean actualizar(Estudiante estudiante) {
         String sql = "CALL sp_actualizar_estudiante(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         CallableStatement stmt = null;
@@ -250,9 +233,8 @@ public class EstudianteDAO {
         }
     }
 
-    /**
-     * Eliminar estudiante usando SP
-     */
+    //Eliminar estudiante usando SP
+
     public boolean eliminar(int estudianteId) {
         String sql = "CALL sp_eliminar_estudiante(?)";
         CallableStatement stmt = null;
@@ -284,9 +266,7 @@ public class EstudianteDAO {
         }
     }
 
-    /**
-     * Obtener lista de voceros
-     */
+
     public List<Estudiante> listarVoceros() {
         List<Estudiante> voceros = new ArrayList<>();
         String sql = "SELECT * FROM estudiantes WHERE es_vocero = 1 ORDER BY nombre";
@@ -315,9 +295,7 @@ public class EstudianteDAO {
         return voceros;
     }
 
-    /**
-     * Mapear ResultSet a objeto Estudiante
-     */
+
     private Estudiante mapearEstudiante(ResultSet rs) throws SQLException {
         Estudiante estudiante = new Estudiante();
         estudiante.setEstudianteId(rs.getInt("estudiante_id"));

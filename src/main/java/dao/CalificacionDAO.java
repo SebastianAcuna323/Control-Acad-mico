@@ -4,7 +4,6 @@ import model.ConexionBD;
 import model.Calificacion;
 import model.CorteEvaluacion;
 import model.ComponenteEvaluacion;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +16,9 @@ public class CalificacionDAO {
         this.conexionDB = ConexionBD.getInstancia();
     }
 
-    // ========== CORTES DE EVALUACIÓN ==========
+    // ---------------- CORTES DE EVALUACIÓN -------------------
 
-    /**
-     * Crear estructura de evaluación para un curso (3 cortes automáticos)
-     */
+
     public boolean crearEstructuraEvaluacion(int cursoId, int periodoId) {
         try {
             // Corte 1: 30%
@@ -43,9 +40,6 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Crear un corte de evaluación
-     */
     public boolean crearCorte(CorteEvaluacion corte) {
         String sql = "INSERT INTO cortes_evaluacion (curso_id, periodo_academico_id, " +
                 "nombre_corte, porcentaje, comentarios_corte) VALUES (?, ?, ?, ?, ?)";
@@ -66,9 +60,6 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Listar cortes de un curso
-     */
     public List<CorteEvaluacion> listarCortesPorCurso(int cursoId) {
         List<CorteEvaluacion> cortes = new ArrayList<>();
         String sql = "SELECT ce.*, c.nombre_curso, p.nombre_periodo " +
@@ -101,11 +92,9 @@ public class CalificacionDAO {
         return cortes;
     }
 
-    // ========== COMPONENTES DE EVALUACIÓN ==========
+    // ------------------------ COMPONENTES DE EVALUACIÓN ---------------------
 
-    /**
-     * Crear un componente de evaluación
-     */
+
     public boolean crearComponente(ComponenteEvaluacion componente) {
         String sql = "INSERT INTO componentes_evaluacion (corte_evaluacion_id, " +
                 "nombre_componente, porcentaje) VALUES (?, ?, ?)";
@@ -124,9 +113,7 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Listar componentes de un corte
-     */
+
     public List<ComponenteEvaluacion> listarComponentesPorCorte(int corteId) {
         List<ComponenteEvaluacion> componentes = new ArrayList<>();
         String sql = "SELECT comp.*, corte.nombre_corte, corte.porcentaje as porcentaje_corte " +
@@ -157,9 +144,7 @@ public class CalificacionDAO {
         return componentes;
     }
 
-    /**
-     * Obtener todos los componentes de un curso
-     */
+
     public List<ComponenteEvaluacion> listarComponentesPorCurso(int cursoId) {
         List<ComponenteEvaluacion> componentes = new ArrayList<>();
         String sql = "SELECT * FROM vista_estructura_evaluacion " +
@@ -187,11 +172,9 @@ public class CalificacionDAO {
         return componentes;
     }
 
-    // ========== CALIFICACIONES ==========
+    // --------------- CALIFICACIONES --------------------
 
-    /**
-     * Registrar calificación usando SP
-     */
+
     public boolean registrarCalificacion(Calificacion calificacion) {
         String sql = "CALL sp_registrar_calificacion(?, ?, ?, ?)";
 
@@ -216,9 +199,7 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Actualizar calificación usando SP
-     */
+
     public boolean actualizarCalificacion(Calificacion calificacion) {
         String sql = "CALL sp_actualizar_calificacion(?, ?, ?)";
 
@@ -242,9 +223,7 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Eliminar calificación usando SP
-     */
+
     public boolean eliminarCalificacion(int calificacionId) {
         String sql = "CALL sp_eliminar_calificacion(?)";
 
@@ -266,9 +245,7 @@ public class CalificacionDAO {
         }
     }
 
-    /**
-     * Obtener calificaciones de un estudiante en un curso usando SP
-     */
+
     public List<Calificacion> obtenerCalificacionesEstudiante(int estudianteId, int cursoId) {
         List<Calificacion> calificaciones = new ArrayList<>();
         String sql = "CALL sp_obtener_calificaciones_estudiante(?, ?)";
@@ -289,9 +266,7 @@ public class CalificacionDAO {
         return calificaciones;
     }
 
-    /**
-     * Listar calificaciones detalladas usando vista
-     */
+
     public List<Calificacion> listarCalificacionesDetalladas(int cursoId) {
         List<Calificacion> calificaciones = new ArrayList<>();
         String sql = "SELECT * FROM vista_calificaciones_detalladas " +
@@ -313,9 +288,7 @@ public class CalificacionDAO {
         return calificaciones;
     }
 
-    /**
-     * Calcular nota final usando SP
-     */
+
     public NotaFinal calcularNotaFinal(int estudianteId, int cursoId) {
         String sql = "CALL sp_calcular_nota_final(?, ?)";
 
@@ -339,9 +312,7 @@ public class CalificacionDAO {
         return null;
     }
 
-    /**
-     * Obtener notas finales de todos los estudiantes de un curso
-     */
+
     public List<NotaFinal> obtenerNotasFinalesCurso(int cursoId) {
         List<NotaFinal> notas = new ArrayList<>();
         String sql = "SELECT * FROM vista_notas_finales WHERE curso_id = ? " +
@@ -370,9 +341,7 @@ public class CalificacionDAO {
         return notas;
     }
 
-    /**
-     * Obtener ranking de estudiantes
-     */
+
     public List<NotaFinal> obtenerRankingCurso(int cursoId) {
         List<NotaFinal> ranking = new ArrayList<>();
         String sql = "SELECT * FROM vista_ranking_estudiantes WHERE curso_id = ? " +
@@ -400,9 +369,6 @@ public class CalificacionDAO {
         return ranking;
     }
 
-    /**
-     * Verificar si ya existe calificación
-     */
     public boolean existeCalificacion(int estudianteId, int componenteId) {
         String sql = "SELECT COUNT(*) as total FROM calificaciones " +
                 "WHERE estudiante_id = ? AND componente_evaluacion_id = ?";
@@ -423,7 +389,7 @@ public class CalificacionDAO {
         return false;
     }
 
-    // ========== MÉTODOS DE MAPEO ==========
+    // ------------------------- MÉTODOS DE MAPEO -------------------
 
     private Calificacion mapearCalificacion(ResultSet rs) throws SQLException {
         Calificacion cal = new Calificacion();
@@ -453,7 +419,7 @@ public class CalificacionDAO {
         return cal;
     }
 
-    // ========== CLASE INTERNA PARA NOTAS FINALES ==========
+    // ------------------------ CLASE INTERNA PARA NOTAS FINALES ------------------
 
     public static class NotaFinal {
         public int ranking;

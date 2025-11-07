@@ -143,23 +143,16 @@ public class Calificacion {
         this.porcentajeCorte = porcentajeCorte;
     }
 
-    /**
-     * Calcular nota ponderada del componente
-     */
     public double calcularNotaPonderadaComponente() {
         return (nota * porcentajeComponente) / 100.0;
     }
 
-    /**
-     * Calcular aporte a la nota final del curso
-     */
+
     public double calcularAporteNotaFinal() {
         return (nota * porcentajeComponente / 100.0) * (porcentajeCorte / 100.0);
     }
 
-    /**
-     * Obtener concepto cualitativo de la nota
-     */
+
     public String getConceptoNota() {
         if (nota >= 4.5) return "Excelente";
         if (nota >= 4.0) return "Sobresaliente";
@@ -169,9 +162,7 @@ public class Calificacion {
         return "Deficiente";
     }
 
-    /**
-     * Obtener color según la nota
-     */
+
     public java.awt.Color getColorNota() {
         if (nota >= 4.5) return new java.awt.Color(39, 174, 96);   // Verde oscuro
         if (nota >= 4.0) return new java.awt.Color(46, 204, 113);  // Verde
@@ -181,16 +172,12 @@ public class Calificacion {
         return new java.awt.Color(231, 76, 60);                     // Rojo
     }
 
-    /**
-     * Validar que la nota esté en el rango permitido
-     */
+
     public boolean validarNota() {
         return nota >= NOTA_MINIMA && nota <= NOTA_MAXIMA;
     }
 
-    /**
-     * Verificar si la nota es aprobatoria
-     */
+
     public boolean esAprobatoria() {
         return nota >= NOTA_APROBATORIA;
     }

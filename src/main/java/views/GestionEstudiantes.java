@@ -2,7 +2,6 @@ package views;
 
 import controllers.EstudianteController;
 import model.Estudiante;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -15,7 +14,6 @@ public class GestionEstudiantes extends JFrame {
     // Componentes de la interfaz
     private JTable tablaEstudiantes;
     private DefaultTableModel modeloTabla;
-
     private JTextField txtIdentificacion;
     private JTextField txtNombre;
     private JTextField txtCorreoInstitucional;
@@ -25,7 +23,6 @@ public class GestionEstudiantes extends JFrame {
     private JComboBox<String> cboGenero;
     private JCheckBox chkEsVocero;
     private JTextArea txtComentarios;
-
     private JButton btnNuevo;
     private JButton btnGuardar;
     private JButton btnActualizar;
@@ -112,7 +109,6 @@ public class GestionEstudiantes extends JFrame {
         panelComentarios.add(scrollComentarios, BorderLayout.CENTER);
         panel.add(panelComentarios);
 
-        // Botones de acción
         panel.add(crearPanelBotones());
 
         return panel;
@@ -127,7 +123,6 @@ public class GestionEstudiantes extends JFrame {
         btnActualizar = new JButton("Actualizar");
         btnEliminar = new JButton("Eliminar");
 
-        // Eventos usando el controlador
         btnNuevo.addActionListener(e -> limpiarFormulario());
         btnGuardar.addActionListener(e -> guardarEstudiante());
         btnActualizar.addActionListener(e -> actualizarEstudiante());
@@ -196,11 +191,11 @@ public class GestionEstudiantes extends JFrame {
         return panel;
     }
 
-    // ========== MÉTODOS PÚBLICOS LLAMADOS POR EL CONTROLADOR ==========
+    // --------------------- MÉTODOS PÚBLICOS LLAMADOS POR EL CONTROLADOR ----------------------
 
-    /**
-     * Actualizar la tabla con la lista de estudiantes
-     */
+
+     //Actualizar la tabla con la lista de estudiantes
+
     public void actualizarTabla(List<Estudiante> estudiantes) {
         modeloTabla.setRowCount(0);
 
@@ -218,9 +213,6 @@ public class GestionEstudiantes extends JFrame {
         }
     }
 
-    /**
-     * Limpiar el formulario
-     */
     public void limpiarFormulario() {
         estudianteIdSeleccionado = -1;
         txtIdentificacion.setText("");
@@ -235,23 +227,18 @@ public class GestionEstudiantes extends JFrame {
         tablaEstudiantes.clearSelection();
     }
 
-    /**
-     * Mostrar mensaje
-     */
+
     public void mostrarMensaje(String mensaje, String titulo, int tipo) {
         JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);
     }
 
-    /**
-     * Confirmar acción
-     */
     public int confirmarAccion(String mensaje, String titulo) {
         return JOptionPane.showConfirmDialog(
                 this, mensaje, titulo, JOptionPane.YES_NO_OPTION
         );
     }
 
-    // ========== MÉTODOS PRIVADOS DE EVENTOS ==========
+    // --------------------MÉTODOS PRIVADOS DE EVENTOS --------------------------
 
     private void cargarEstudianteSeleccionado() {
         int fila = tablaEstudiantes.getSelectedRow();

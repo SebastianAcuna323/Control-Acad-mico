@@ -15,7 +15,6 @@ public class GestionDocentes extends JFrame {
     // Componentes de la interfaz
     private JTable tablaDocentes;
     private DefaultTableModel modeloTabla;
-
     private JTextField txtNombreDocente;
     private JTextField txtIdentificacion;
     private JComboBox<String> cboTipoIdentificacion;
@@ -24,7 +23,6 @@ public class GestionDocentes extends JFrame {
     private JTextField txtTituloEstudios;
     private JTextField txtIdiomas;
     private JTextArea txtCertificaciones;
-
     private JButton btnNuevo;
     private JButton btnGuardar;
     private JButton btnActualizar;
@@ -195,7 +193,7 @@ public class GestionDocentes extends JFrame {
         return panel;
     }
 
-    // ========== MÉTODOS PÚBLICOS ==========
+    // ------------------------- MÉTODOS PÚBLICOS ------------------------------
 
     public void actualizarTabla(List<Docente> docentes) {
         modeloTabla.setRowCount(0);
@@ -237,7 +235,7 @@ public class GestionDocentes extends JFrame {
         );
     }
 
-    // ========== MÉTODOS PRIVADOS ==========
+    // ---------------------------- MÉTODOS PRIVADOS -----------------------
 
     private void cargarDocenteSeleccionado() {
         int fila = tablaDocentes.getSelectedRow();

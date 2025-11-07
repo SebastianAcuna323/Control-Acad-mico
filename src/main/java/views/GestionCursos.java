@@ -4,7 +4,6 @@ import controllers.CursoController;
 import model.Curso;
 import model.Docente;
 import model.PeriodoAcademico;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -222,9 +221,7 @@ public class GestionCursos extends JFrame {
         return panel;
     }
 
-    /**
-     * Cargar los ComboBoxes con datos
-     */
+
     private void cargarComboBoxes() {
         // Cargar periodos
         List<PeriodoAcademico> periodos = controller.cargarPeriodos();
@@ -241,7 +238,7 @@ public class GestionCursos extends JFrame {
         }
     }
 
-    // ========== MÉTODOS PÚBLICOS ==========
+    // ---------------------- MÉTODOS PÚBLICOS ------------------------------
 
     public void actualizarTabla(List<Curso> cursos) {
         modeloTabla.setRowCount(0);

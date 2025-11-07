@@ -128,9 +128,9 @@ public class Docente {
                 '}';
     }
 
-    /**
-     * Método para obtener el nombre completo con título
-     */
+
+     //Método para obtener el nombre completo con título
+
     public String getNombreConTitulo() {
         if (tituloEstudios != null && !tituloEstudios.isEmpty()) {
             return tituloEstudios + " " + nombreDocente;

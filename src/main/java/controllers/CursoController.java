@@ -23,9 +23,7 @@ public class CursoController {
         this.periodoDAO = new PeriodoAcademicoDAO();
     }
 
-    /**
-     * Crear un nuevo curso
-     */
+
     public void crearCurso(String nombreCurso, int periodoId, int docenteId,
                            String descripcion) {
 
@@ -61,9 +59,7 @@ public class CursoController {
         }
     }
 
-    /**
-     * Actualizar un curso existente
-     */
+
     public void actualizarCurso(int cursoId, String nombreCurso, int periodoId,
                                 int docenteId, String descripcion) {
 
@@ -108,9 +104,7 @@ public class CursoController {
         }
     }
 
-    /**
-     * Eliminar un curso
-     */
+
     public void eliminarCurso(int cursoId) {
         if (cursoId < 0) {
             vista.mostrarMensaje(
@@ -151,33 +145,25 @@ public class CursoController {
         }
     }
 
-    /**
-     * Cargar todos los cursos
-     */
+
     public void cargarCursos() {
         List<Curso> cursos = cursoDAO.listarVista();
         vista.actualizarTabla(cursos);
     }
 
-    /**
-     * Cargar cursos por periodo
-     */
+
     public void cargarCursosPorPeriodo(int periodoId) {
         List<Curso> cursos = cursoDAO.listarPorPeriodo(periodoId);
         vista.actualizarTabla(cursos);
     }
 
-    /**
-     * Cargar cursos por docente
-     */
+
     public void cargarCursosPorDocente(int docenteId) {
         List<Curso> cursos = cursoDAO.listarPorDocente(docenteId);
         vista.actualizarTabla(cursos);
     }
 
-    /**
-     * Buscar cursos por nombre
-     */
+
     public void buscarCursos(String criterio) {
         if (criterio == null || criterio.trim().isEmpty()) {
             cargarCursos();
@@ -196,37 +182,27 @@ public class CursoController {
         }
     }
 
-    /**
-     * Obtener un curso por ID
-     */
+
     public Curso obtenerCurso(int cursoId) {
         return cursoDAO.obtenerPorId(cursoId);
     }
 
-    /**
-     * Cargar lista de docentes para el ComboBox
-     */
+
     public List<Docente> cargarDocentes() {
         return docenteDAO.listarTodos();
     }
 
-    /**
-     * Cargar lista de periodos para el ComboBox
-     */
+
     public List<PeriodoAcademico> cargarPeriodos() {
         return periodoDAO.listarTodos();
     }
 
-    /**
-     * Cargar solo periodos activos
-     */
+
     public List<PeriodoAcademico> cargarPeriodosActivos() {
         return periodoDAO.listarActivos();
     }
 
-    /**
-     * Validar datos del curso
-     */
+
     private String validarDatosCurso(String nombreCurso, int periodoId, int docenteId) {
 
         // Validar nombre del curso
@@ -267,9 +243,7 @@ public class CursoController {
         return null; // Validación exitosa
     }
 
-    /**
-     * Obtener estadísticas de cursos
-     */
+
     public String obtenerEstadisticas() {
         List<Curso> todos = cursoDAO.listarTodos();
         List<PeriodoAcademico> periodos = periodoDAO.listarTodos();

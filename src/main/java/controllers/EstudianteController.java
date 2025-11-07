@@ -18,17 +18,13 @@ public class EstudianteController {
     private static final Pattern PATTERN_TELEFONO =
             Pattern.compile("^[0-9]{7,10}$");
 
-    /**
-     * Constructor
-     */
+
     public EstudianteController(GestionEstudiantes vista) {
         this.vista = vista;
         this.estudianteDao = new EstudianteDAO();
     }
 
-    /**
-     * Crear un nuevo estudiante
-     */
+
     public void crearEstudiante(String identificacion, String nombre,
                                 String correoInstitucional, String correoPersonal,
                                 String telefono, boolean esVocero,
@@ -80,9 +76,7 @@ public class EstudianteController {
         }
     }
 
-    /**
-     * Actualizar un estudiante existente
-     */
+
     public void actualizarEstudiante(int estudianteId, String identificacion,
                                      String nombre, String correoInstitucional,
                                      String correoPersonal, String telefono,
@@ -134,9 +128,7 @@ public class EstudianteController {
         }
     }
 
-    /**
-     * Eliminar un estudiante
-     */
+
     public void eliminarEstudiante(int estudianteId) {
         if (estudianteId < 0) {
             vista.mostrarMensaje(
@@ -177,17 +169,13 @@ public class EstudianteController {
         }
     }
 
-    /**
-     * Cargar todos los estudiantes en la vista
-     */
+
     public void cargarEstudiantes() {
         List<Estudiante> estudiantes = estudianteDao.listarTodos();
         vista.actualizarTabla(estudiantes);
     }
 
-    /**
-     * Buscar estudiantes por nombre
-     */
+
     public void buscarEstudiantes(String criterio) {
         if (criterio == null || criterio.trim().isEmpty()) {
             cargarEstudiantes();
@@ -206,24 +194,18 @@ public class EstudianteController {
         }
     }
 
-    /**
-     * Obtener un estudiante por ID
-     */
+
     public Estudiante obtenerEstudiante(int estudianteId) {
         return estudianteDao.obtenerPorId(estudianteId);
     }
 
-    /**
-     * Listar voceros
-     */
+
     public void cargarVoceros() {
         List<Estudiante> voceros = estudianteDao.listarVoceros();
         vista.actualizarTabla(voceros);
     }
 
-    /**
-     * Validar datos del estudiante
-     */
+
     private String validarDatosEstudiante(String identificacion, String nombre,
                                           String correoInstitucional,
                                           String correoPersonal, String telefono) {
@@ -276,23 +258,17 @@ public class EstudianteController {
         return null; // Validación exitosa
     }
 
-    /**
-     * Validar formato de email
-     */
+
     public boolean validarEmail(String email) {
         return PATTERN_EMAIL.matcher(email).matches();
     }
 
-    /**
-     * Validar formato de teléfono
-     */
+
     public boolean validarTelefono(String telefono) {
         return PATTERN_TELEFONO.matcher(telefono).matches();
     }
 
-    /**
-     * Obtener estadísticas de estudiantes
-     */
+
     public String obtenerEstadisticas() {
         List<Estudiante> todos = estudianteDao.listarTodos();
         List<Estudiante> voceros = estudianteDao.listarVoceros();

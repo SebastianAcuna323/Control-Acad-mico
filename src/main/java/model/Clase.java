@@ -11,7 +11,6 @@ public class Clase {
     private String descripcionClase;
     private String comentariosClase;
 
-    // Para mostrar información relacionada
     private String nombreCurso;
 
     public Clase() {}

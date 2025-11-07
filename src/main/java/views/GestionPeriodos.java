@@ -17,11 +17,9 @@ public class GestionPeriodos extends JFrame {
     // Componentes
     private JTable tablaPeriodos;
     private DefaultTableModel modeloTabla;
-
     private JTextField txtNombrePeriodo;
     private JDateChooser dateInicio;
     private JDateChooser dateFin;
-
     private JButton btnNuevo;
     private JButton btnGuardar;
     private JButton btnActualizar;
@@ -203,7 +201,7 @@ public class GestionPeriodos extends JFrame {
         return panel;
     }
 
-    // ========== MÉTODOS PÚBLICOS ==========
+    // ---------------------------- MÉTODOS PÚBLICOS ------------------------
 
     public void actualizarTabla(List<PeriodoAcademico> periodos) {
         modeloTabla.setRowCount(0);

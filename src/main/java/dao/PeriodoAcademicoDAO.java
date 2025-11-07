@@ -14,9 +14,9 @@ public class PeriodoAcademicoDAO {
         this.conexionDB = ConexionBD.getInstancia();
     }
 
-    /**
-     * Crear un nuevo periodo académico usando SP
-     */
+
+     //Crear un nuevo periodo académico usando SP
+
     public boolean crear(PeriodoAcademico periodo) {
         String sql = "CALL sp_crear_periodo(?, ?, ?)";
 
@@ -40,9 +40,8 @@ public class PeriodoAcademicoDAO {
         }
     }
 
-    /**
-     * Obtener periodo por ID
-     */
+
+
     public PeriodoAcademico obtenerPorId(int periodoId) {
         String sql = "CALL sp_obtener_periodo(?)";
 
@@ -61,9 +60,9 @@ public class PeriodoAcademicoDAO {
         return null;
     }
 
-    /**
-     * Listar todos los periodos
-     */
+
+     //Listar todos los periodos
+
     public List<PeriodoAcademico> listarTodos() {
         List<PeriodoAcademico> periodos = new ArrayList<>();
         String sql = "CALL sp_listar_periodos()";
@@ -82,9 +81,7 @@ public class PeriodoAcademicoDAO {
         return periodos;
     }
 
-    /**
-     * Listar solo periodos activos (fecha_fin >= hoy)
-     */
+
     public List<PeriodoAcademico> listarActivos() {
         List<PeriodoAcademico> periodos = new ArrayList<>();
         String sql = "CALL sp_listar_periodos_activos()";
@@ -103,9 +100,7 @@ public class PeriodoAcademicoDAO {
         return periodos;
     }
 
-    /**
-     * Actualizar periodo
-     */
+
     public boolean actualizar(PeriodoAcademico periodo) {
         String sql = "CALL sp_actualizar_periodo(?, ?, ?, ?)";
 
@@ -130,9 +125,7 @@ public class PeriodoAcademicoDAO {
         }
     }
 
-    /**
-     * Eliminar periodo
-     */
+
     public boolean eliminar(int periodoId) {
         String sql = "CALL sp_eliminar_periodo(?)";
 
@@ -154,9 +147,7 @@ public class PeriodoAcademicoDAO {
         }
     }
 
-    /**
-     * Buscar periodos por nombre
-     */
+
     public List<PeriodoAcademico> buscarPorNombre(String nombre) {
         List<PeriodoAcademico> periodos = new ArrayList<>();
         String sql = "SELECT * FROM periodos_academicos WHERE nombre_periodo LIKE ? ORDER BY fecha_inicio DESC";
@@ -176,9 +167,6 @@ public class PeriodoAcademicoDAO {
         return periodos;
     }
 
-    /**
-     * Obtener periodo actual (el que contiene la fecha de hoy)
-     */
     public PeriodoAcademico obtenerPeriodoActual() {
         String sql = "SELECT * FROM periodos_academicos " +
                 "WHERE CURDATE() BETWEEN fecha_inicio AND fecha_fin " +
@@ -198,9 +186,7 @@ public class PeriodoAcademicoDAO {
         return null;
     }
 
-    /**
-     * Mapear ResultSet a objeto PeriodoAcademico
-     */
+
     private PeriodoAcademico mapearPeriodo(ResultSet rs) throws SQLException {
         PeriodoAcademico periodo = new PeriodoAcademico();
         periodo.setPeriodoAcademicoId(rs.getInt("periodo_academico_id"));

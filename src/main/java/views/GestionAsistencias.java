@@ -6,7 +6,6 @@ import model.Asistencia;
 import model.Curso;
 import model.Estudiante;
 import com.toedter.calendar.JDateChooser;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -276,9 +275,7 @@ public class GestionAsistencias extends JFrame {
         return panel;
     }
 
-    /**
-     * Cargar ComboBoxes
-     */
+
     private void cargarComboBoxes() {
         // Cargar cursos
         List<Curso> cursos = controller.cargarCursos();
@@ -297,7 +294,7 @@ public class GestionAsistencias extends JFrame {
         }
     }
 
-    // ========== MÉTODOS PÚBLICOS ==========
+    // ---------------------------- MÉTODOS PÚBLICOS -----------------------
 
     public void actualizarTabla(List<Asistencia> asistencias) {
         modeloTabla.setRowCount(0);
@@ -341,9 +338,8 @@ public class GestionAsistencias extends JFrame {
         );
     }
 
-    /**
-     * Mostrar reporte de asistencias
-     */
+     //Mostrar reporte de asistencias
+
     public void mostrarReporteAsistencias(List<AsistenciaDAO.AsistenciaEstadistica> estadisticas) {
         // Crear diálogo para mostrar el reporte
         JDialog dialog = new JDialog(this, "Reporte de Asistencias por Curso", true);
@@ -387,7 +383,7 @@ public class GestionAsistencias extends JFrame {
         dialog.setVisible(true);
     }
 
-    // ========== MÉTODOS PRIVADOS ==========
+    // ----------------------- MÉTODOS PRIVADOS -------------------------
 
     private void cargarAsistenciaSeleccionada() {
         int fila = tablaAsistencias.getSelectedRow();

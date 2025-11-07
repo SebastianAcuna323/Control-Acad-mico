@@ -5,7 +5,6 @@ package controllers;
 import dao.PeriodoAcademicoDAO;
 import model.PeriodoAcademico;
 import views.GestionPeriodos;
-
 import javax.swing.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -20,9 +19,7 @@ public class PeriodoAcademicoController {
         this.periodoDAO = new PeriodoAcademicoDAO();
     }
 
-    /**
-     * Crear nuevo periodo
-     */
+
     public void crearPeriodo(String nombrePeriodo, Date fechaInicio, Date fechaFin) {
         // Validar datos
         String mensajeValidacion = validarDatosPeriodo(nombrePeriodo, fechaInicio, fechaFin);
@@ -56,9 +53,7 @@ public class PeriodoAcademicoController {
         }
     }
 
-    /**
-     * Actualizar periodo existente
-     */
+
     public void actualizarPeriodo(int periodoId, String nombrePeriodo,
                                   Date fechaInicio, Date fechaFin) {
         if (periodoId < 0) {
@@ -102,9 +97,7 @@ public class PeriodoAcademicoController {
         }
     }
 
-    /**
-     * Eliminar periodo
-     */
+
     public void eliminarPeriodo(int periodoId) {
         if (periodoId < 0) {
             vista.mostrarMensaje(
@@ -145,25 +138,19 @@ public class PeriodoAcademicoController {
         }
     }
 
-    /**
-     * Cargar todos los periodos
-     */
+
     public void cargarPeriodos() {
         List<PeriodoAcademico> periodos = periodoDAO.listarTodos();
         vista.actualizarTabla(periodos);
     }
 
-    /**
-     * Cargar solo periodos activos
-     */
+
     public void cargarPeriodosActivos() {
         List<PeriodoAcademico> periodos = periodoDAO.listarActivos();
         vista.actualizarTabla(periodos);
     }
 
-    /**
-     * Buscar periodos por nombre
-     */
+
     public void buscarPeriodos(String criterio) {
         if (criterio == null || criterio.trim().isEmpty()) {
             cargarPeriodos();
@@ -182,23 +169,17 @@ public class PeriodoAcademicoController {
         }
     }
 
-    /**
-     * Obtener periodo por ID
-     */
+
     public PeriodoAcademico obtenerPeriodo(int periodoId) {
         return periodoDAO.obtenerPorId(periodoId);
     }
 
-    /**
-     * Obtener periodo actual
-     */
+
     public PeriodoAcademico obtenerPeriodoActual() {
         return periodoDAO.obtenerPeriodoActual();
     }
 
-    /**
-     * Validar datos del periodo
-     */
+
     private String validarDatosPeriodo(String nombrePeriodo, Date fechaInicio, Date fechaFin) {
         // Validar nombre
         if (nombrePeriodo == null || nombrePeriodo.trim().isEmpty()) {
@@ -240,12 +221,9 @@ public class PeriodoAcademicoController {
             return "El periodo no puede durar más de 1 año";
         }
 
-        return null; // Validación exitosa
+        return null;
     }
 
-    /**
-     * Obtener estadísticas de periodos
-     */
     public String obtenerEstadisticas() {
         List<PeriodoAcademico> todos = periodoDAO.listarTodos();
         List<PeriodoAcademico> activos = periodoDAO.listarActivos();

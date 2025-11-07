@@ -8,7 +8,6 @@ import model.Asistencia;
 import model.Curso;
 import model.Estudiante;
 import views.GestionAsistencias;
-
 import javax.swing.*;
 import java.sql.Date;
 import java.util.List;
@@ -26,9 +25,7 @@ public class AsistenciaController {
         this.estudianteDAO = new EstudianteDAO();
     }
 
-    /**
-     * Registrar asistencia
-     */
+
     public void registrarAsistencia(int estudianteId, int cursoId, Date fechaClase,
                                     String estadoAsistencia, String novedades) {
 
@@ -77,9 +74,7 @@ public class AsistenciaController {
         }
     }
 
-    /**
-     * Actualizar asistencia existente
-     */
+
     public void actualizarAsistencia(int asistenciaId, String estadoAsistencia,
                                      String novedades) {
 
@@ -126,9 +121,7 @@ public class AsistenciaController {
         }
     }
 
-    /**
-     * Eliminar asistencia
-     */
+
     public void eliminarAsistencia(int asistenciaId) {
         if (asistenciaId < 0) {
             vista.mostrarMensaje(
@@ -167,17 +160,13 @@ public class AsistenciaController {
         }
     }
 
-    /**
-     * Cargar todas las asistencias
-     */
+
     public void cargarAsistencias() {
         List<Asistencia> asistencias = asistenciaDAO.listarTodas();
         vista.actualizarTabla(asistencias);
     }
 
-    /**
-     * Cargar asistencias por curso
-     */
+
     public void cargarAsistenciasPorCurso(int cursoId) {
         if (cursoId <= 0) {
             cargarAsistencias();
@@ -187,9 +176,7 @@ public class AsistenciaController {
         vista.actualizarTabla(asistencias);
     }
 
-    /**
-     * Cargar asistencias por fecha
-     */
+
     public void cargarAsistenciasPorFecha(int cursoId, Date fecha) {
         if (cursoId <= 0 || fecha == null) {
             vista.mostrarMensaje(
@@ -203,23 +190,15 @@ public class AsistenciaController {
         vista.actualizarTabla(asistencias);
     }
 
-    /**
-     * Cargar lista de cursos
-     */
+
     public List<Curso> cargarCursos() {
         return cursoDAO.listarVista();
     }
 
-    /**
-     * Cargar lista de estudiantes
-     */
     public List<Estudiante> cargarEstudiantes() {
         return estudianteDAO.listarTodos();
     }
 
-    /**
-     * Mostrar estadísticas de asistencia de un estudiante
-     */
     public void mostrarEstadisticasEstudiante(int estudianteId, int cursoId) {
         if (estudianteId <= 0 || cursoId <= 0) {
             vista.mostrarMensaje(
@@ -267,9 +246,6 @@ public class AsistenciaController {
         }
     }
 
-    /**
-     * Mostrar reporte de asistencias por curso
-     */
     public void mostrarReporteAsistenciasCurso(int cursoId) {
         if (cursoId <= 0) {
             vista.mostrarMensaje(
@@ -295,9 +271,6 @@ public class AsistenciaController {
         vista.mostrarReporteAsistencias(estadisticas);
     }
 
-    /**
-     * Validar datos de asistencia
-     */
     private String validarDatosAsistencia(int estudianteId, int cursoId,
                                           Date fechaClase, String estadoAsistencia) {
 
@@ -346,9 +319,7 @@ public class AsistenciaController {
         return null; // Validación exitosa
     }
 
-    /**
-     * Obtener estadísticas generales
-     */
+
     public String obtenerEstadisticas() {
         List<Asistencia> todas = asistenciaDAO.listarTodas();
 
