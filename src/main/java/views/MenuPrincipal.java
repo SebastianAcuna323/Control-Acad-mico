@@ -197,17 +197,11 @@ public class MenuPrincipal extends JFrame {
     }
 
     private void abrirGestionCalificaciones() {
-        JOptionPane.showMessageDialog(this,
-                "Módulo de Calificaciones en desarrollo",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+        new views.GestionCalificaciones().setVisible(true);
     }
 
     private void abrirGestionAsistencias() {
-        JOptionPane.showMessageDialog(this,
-                "Módulo de Asistencias en desarrollo",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+        new views.GestionAsistencias().setVisible(true);
     }
 
     private void abrirGestionClases() {

@@ -21,12 +21,22 @@ public class EstudianteDAO {
 
     /**
      * Crear un nuevo estudiante usando SP
-     * CALL sp_crear_estudiante(...)
+     * VERSIÓN MEJORADA con mejor manejo de errores
      */
     public boolean crear(Estudiante estudiante) {
         String sql = "CALL sp_crear_estudiante(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        CallableStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            System.out.println("=== DEBUG: Creando estudiante ===");
+            System.out.println("Identificación: " + estudiante.getIdentificacion());
+            System.out.println("Nombre: " + estudiante.getNombre());
+            System.out.println("Correo Institucional: " + estudiante.getCorreoInstitucional());
+
+            stmt = conexionBD.getConexion().prepareCall(sql);
+
             stmt.setString(1, estudiante.getIdentificacion());
             stmt.setString(2, estudiante.getNombre());
             stmt.setString(3, estudiante.getCorreoInstitucional());
@@ -37,31 +47,53 @@ public class EstudianteDAO {
             stmt.setString(8, estudiante.getGenero());
             stmt.setString(9, estudiante.getComentarios());
 
-            ResultSet rs = stmt.executeQuery();
+            System.out.println("Ejecutando procedimiento almacenado...");
+            rs = stmt.executeQuery();
+
             if (rs.next()) {
                 String resultado = rs.getString("resultado");
-                System.out.println(resultado);
-                return resultado.contains("Éxito");
+                System.out.println("Resultado: " + resultado);
+
+                if (resultado.contains("Éxito") || resultado.contains("Exito")) {
+                    return true;
+                } else {
+                    System.err.println("Error del SP: " + resultado);
+                    return false;
+                }
             }
+
+            System.err.println("El procedimiento no devolvió resultado");
             return false;
 
         } catch (SQLException e) {
-            System.err.println("Error al crear estudiante: " + e.getMessage());
+            System.err.println("===== ERROR SQL DETALLADO =====");
+            System.err.println("Mensaje: " + e.getMessage());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     /**
      * Obtener estudiante por ID usando SP
-     * CALL sp_obtener_estudiante(?)
      */
     public Estudiante obtenerPorId(int estudianteId) {
         String sql = "CALL sp_obtener_estudiante(?)";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
             stmt.setInt(1, estudianteId);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             if (rs.next()) {
                 return mapearEstudiante(rs);
@@ -70,20 +102,29 @@ public class EstudianteDAO {
         } catch (SQLException e) {
             System.err.println("Error al obtener estudiante: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
     /**
      * Listar todos los estudiantes usando SP
-     * CALL sp_listar_estudiantes()
      */
     public List<Estudiante> listarTodos() {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "CALL sp_listar_estudiantes()";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
-            ResultSet rs = stmt.executeQuery();
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 estudiantes.add(mapearEstudiante(rs));
@@ -92,20 +133,29 @@ public class EstudianteDAO {
         } catch (SQLException e) {
             System.err.println("Error al listar estudiantes: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return estudiantes;
     }
 
     /**
      * Buscar estudiante por identificación usando SP
-     * CALL sp_buscar_estudiante_por_identificacion(?)
      */
     public Estudiante buscarPorIdentificacion(String identificacion) {
         String sql = "CALL sp_buscar_estudiante_por_identificacion(?)";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
             stmt.setString(1, identificacion);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             if (rs.next()) {
                 return mapearEstudiante(rs);
@@ -114,21 +164,30 @@ public class EstudianteDAO {
         } catch (SQLException e) {
             System.err.println("Error al buscar estudiante: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
     /**
      * Buscar estudiantes por nombre usando SP
-     * CALL sp_buscar_estudiantes_por_nombre(?)
      */
     public List<Estudiante> buscarPorNombre(String nombre) {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "CALL sp_buscar_estudiantes_por_nombre(?)";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
             stmt.setString(1, nombre);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 estudiantes.add(mapearEstudiante(rs));
@@ -137,18 +196,27 @@ public class EstudianteDAO {
         } catch (SQLException e) {
             System.err.println("Error al buscar por nombre: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return estudiantes;
     }
 
     /**
      * Actualizar estudiante usando SP
-     * CALL sp_actualizar_estudiante(...)
      */
     public boolean actualizar(Estudiante estudiante) {
         String sql = "CALL sp_actualizar_estudiante(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
             stmt.setInt(1, estudiante.getEstudianteId());
             stmt.setString(2, estudiante.getIdentificacion());
             stmt.setString(3, estudiante.getNombre());
@@ -160,11 +228,11 @@ public class EstudianteDAO {
             stmt.setString(9, estudiante.getGenero());
             stmt.setString(10, estudiante.getComentarios());
 
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             if (rs.next()) {
                 String resultado = rs.getString("resultado");
                 System.out.println(resultado);
-                return resultado.contains("Éxito");
+                return resultado.contains("Éxito") || resultado.contains("Exito");
             }
             return false;
 
@@ -172,24 +240,33 @@ public class EstudianteDAO {
             System.err.println("Error al actualizar estudiante: " + e.getMessage());
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     /**
      * Eliminar estudiante usando SP
-     * CALL sp_eliminar_estudiante(?)
      */
     public boolean eliminar(int estudianteId) {
         String sql = "CALL sp_eliminar_estudiante(?)";
+        CallableStatement stmt = null;
+        ResultSet rs = null;
 
-        try (CallableStatement stmt = conexionBD.getConexion().prepareCall(sql)) {
+        try {
+            stmt = conexionBD.getConexion().prepareCall(sql);
             stmt.setInt(1, estudianteId);
 
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             if (rs.next()) {
                 String resultado = rs.getString("resultado");
                 System.out.println(resultado);
-                return resultado.contains("Éxito");
+                return resultado.contains("Éxito") || resultado.contains("Exito");
             }
             return false;
 
@@ -197,6 +274,13 @@ public class EstudianteDAO {
             System.err.println("Error al eliminar estudiante: " + e.getMessage());
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -205,10 +289,13 @@ public class EstudianteDAO {
      */
     public List<Estudiante> listarVoceros() {
         List<Estudiante> voceros = new ArrayList<>();
-        String sql = "SELECT * FROM vista_estudiantes_contacto WHERE es_vocero = 1";
+        String sql = "SELECT * FROM estudiantes WHERE es_vocero = 1 ORDER BY nombre";
+        Statement stmt = null;
+        ResultSet rs = null;
 
-        try (Statement stmt = conexionBD.getConexion().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try {
+            stmt = conexionBD.getConexion().createStatement();
+            rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 voceros.add(mapearEstudiante(rs));
@@ -217,6 +304,13 @@ public class EstudianteDAO {
         } catch (SQLException e) {
             System.err.println("Error al listar voceros: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return voceros;
     }
@@ -237,26 +331,5 @@ public class EstudianteDAO {
         estudiante.setGenero(rs.getString("genero"));
         estudiante.setComentarios(rs.getString("comentarios"));
         return estudiante;
-    }
-
-    /**
-     * Método de prueba
-     */
-    public static void main(String[] args) {
-        EstudianteDAO dao = new EstudianteDAO();
-
-        // Listar todos los estudiantes
-        System.out.println("=== LISTANDO ESTUDIANTES ===");
-        List<Estudiante> estudiantes = dao.listarTodos();
-        for (Estudiante e : estudiantes) {
-            System.out.println(e);
-        }
-
-        // Buscar por ID
-        System.out.println("\n=== BUSCANDO ESTUDIANTE ID 1 ===");
-        Estudiante estudiante = dao.obtenerPorId(1);
-        if (estudiante != null) {
-            System.out.println(estudiante);
-        }
     }
 }
