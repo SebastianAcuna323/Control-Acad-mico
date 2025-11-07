@@ -193,10 +193,7 @@ public class MenuPrincipal extends JFrame {
     }
 
     private void abrirGestionCursos() {
-        JOptionPane.showMessageDialog(this,
-                "Módulo de Cursos en desarrollo",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+        new views.GestionCursos().setVisible(true);
     }
 
     private void abrirGestionCalificaciones() {
